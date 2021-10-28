@@ -23,7 +23,8 @@ function corrected_reference = fixReference(RAW_FILENAME, varargin)
 %       pixels
 
 %% 
-% Developed by SAM on 11/15/2020. Based on code developed by LFM.
+% Developed by Santiago Acosta on 11/15/2020. 
+% Based on code developed by Luis Franco.
 % Last updated 10/27/2021.
 
 %% Importing input image and enforcing tif format

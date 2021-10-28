@@ -111,7 +111,9 @@ classdef RegistrationGUI < matlab.apps.AppBase
             
 %             Create UIAxes
             app.ImageAxes = uiaxes(app.UIFigure);
+         
             axis(app.ImageAxes, 'image')
+            hold(app.ImageAxes,'on')
             app.ImageAxes.Color = [0 0 0];
             app.ImageAxes.XTick = [];
             app.ImageAxes.XTickLabel = {'[ ]'};
@@ -119,7 +121,7 @@ classdef RegistrationGUI < matlab.apps.AppBase
             app.ImageAxes.Position = [334 66 631 562];
             app.ImageAxes.XColor = [0 0 0];
             app.ImageAxes.YColor = [0 0 0];
-            colormap(app.ImageAxes, 'gray');
+            app.ImageAxes.Colormap = colormap('gray');
             app.ImageAxes.BackgroundColor = [0 0 0];
             
             % Create LoadImageButton
@@ -222,7 +224,6 @@ classdef RegistrationGUI < matlab.apps.AppBase
             clearImage(app)
             maskImage(app);
             imagesc(app.ImageAxes, app.curr_image);
-
             
         end
         
@@ -270,7 +271,7 @@ classdef RegistrationGUI < matlab.apps.AppBase
                 template_2show(:, :, i) = single_layer;
             end
             
-            template_colors = 0.85  * hsv(7);
+            template_colors = 0.85  * colormap(hsv(7));
             
             if isequal(app.mask_order, 0) || isempty(app.mask_order)
                 
