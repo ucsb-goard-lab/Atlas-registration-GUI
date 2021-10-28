@@ -1,0 +1,133 @@
+function cortexData = cortexmap2mat(CORTEXMAP_FILENAME, DIM)
+% cortexmap2mat(CORTEXMAP_FILENAME) creates ROIs matrix from cortexmap
+% image
+% INPUTS:
+%       CORTEXMAP_FILENAME: string, filename (must be in tif
+%       format)
+%       DIM: scalar contanining the desired dimensions of x-pixels and
+%       y-pixels
+% OTPUT:
+%       cortexData: struct containing the names of the layers in the
+%       original dimensions of tif file and a matrix containing all the
+%       rois in the desired dimensions (array sized DIM x DIM)
+%
+%%
+% Developed by Luis Franco Mendez
+% Last updated by Santiago Acosta on 10/28/2021
+
+%%
+
+cortex_map = importdata(CORTEXMAP_FILENAME);
+
+I = single(rgb2gray(cortex_map)); 
+I = single(I);
+X = zeros(size(cortex_map,1), size(cortex_map,2));
+cortexData.cortexMap = I;
+
+% Cortices ROIs
+
+    % SMC
+    rois = X; rois(I==190) = 1; rois(I~=190) = 0;
+    s = regionprops(logical(rois),'Area','PixelIdxList');
+    x = zeros(length(s),1);
+    for i=1:length(s)
+        x(i) = s(i).Area;
+    end
+    [~,y] = sort(x,'descend');
+    newX = X; newX(s(y(1)).PixelIdxList) = 1; newX(s(y(2)).PixelIdxList) = 1;
+    cortexData.SMC = newX;
+    clear('rois','s','x','y','newX')
+    
+    % SSC
+    rois = X; rois(I==110) = 1; rois(I~=110) = 0;
+    s = regionprops(logical(rois),'Area','PixelIdxList');
+    x = zeros(length(s),1);
+    for i=1:length(s)
+        x(i) = s(i).Area;
+    end
+    [~,y] = sort(x,'descend');
+    newX = X; newX(s(y(1)).PixelIdxList) = 1; newX(s(y(2)).PixelIdxList) = 1;
+    cortexData.SSC = newX;
+    clear('rois','s','x','y','newX')
+    
+    % PPC
+    rois = X; rois(I==231) = 1; rois(I~=231) = 0;
+    s = regionprops(logical(rois),'Area','PixelIdxList');
+    x = zeros(length(s),1);
+    for i=1:length(s)
+        x(i) = s(i).Area;
+    end
+    [~,y] = sort(x,'descend');
+    newX = X; newX(s(y(1)).PixelIdxList) = 1; newX(s(y(2)).PixelIdxList) = 1;
+    cortexData.PPC = newX;
+    clear('rois','s','x','y','newX')
+    
+    % RSC
+    rois = X; rois(I==32) = 1; rois(I~=32) = 0;
+    s = regionprops(logical(rois),'Area','PixelIdxList');
+    x = zeros(length(s),1);
+    for i=1:length(s)
+        x(i) = s(i).Area;
+    end
+    [~,y] = sort(x,'descend');
+    newX = X; newX(s(y(1)).PixelIdxList) = 1; newX(s(y(2)).PixelIdxList) = 1;
+    cortexData.RSC = newX;
+    clear('rois','s','x','y','newX')
+    
+    % VC
+    rois = X; rois(I==65) = 1; rois(I~=65) = 0;
+    s = regionprops(logical(rois),'Area','PixelIdxList');
+    x = zeros(length(s),1);
+    for i=1:length(s)
+        x(i) = s(i).Area;
+    end
+    [~,y] = sort(x,'descend');
+    newX = X; newX(s(y(1)).PixelIdxList) = 1; newX(s(y(2)).PixelIdxList) = 1;
+    cortexData.VC = newX;
+    clear('rois','s','x','y','newX')
+    
+    % AC
+    rois = X; rois(I==149) = 1; rois(I~=149) = 0;
+    s = regionprops(logical(rois),'Area','PixelIdxList');
+    x = zeros(length(s),1);
+    for i=1:length(s)
+        x(i) = s(i).Area;
+    end
+    [~,y] = sort(x,'descend');
+    newX = X; newX(s(y(1)).PixelIdxList) = 1; newX(s(y(2)).PixelIdxList) = 1;
+    cortexData.AC = newX;
+    clear('rois','s','x','y','newX')
+    
+    % TAC
+    rois = X; rois(I==211) = 1; rois(I~=211) = 0;
+    s = regionprops(logical(rois),'Area','PixelIdxList');
+    x = zeros(length(s),1);
+    for i=1:length(s)
+        x(i) = s(i).Area;
+    end
+    [~,y] = sort(x,'descend');
+    newX = X; newX(s(y(1)).PixelIdxList) = 1; newX(s(y(2)).PixelIdxList) = 1;
+    cortexData.TAC = newX;
+    clear('rois','s','x','y','newX')
+
+    
+% ROIs
+cortexData.ROIs = zeros(DIM, DIM, 7);
+
+for i = 1:7
+    cortexData.ROIs(:,:,i) = 
+cortexData.ROIs(:,:,1) = imresize(cortexData.SMC,[400 400],'Method','nearest');
+cortexData.ROIs(:,:,2) = imresize(cortexData.SSC,[400 400],'Method','nearest');
+cortexData.ROIs(:,:,3) = imresize(cortexData.PPC,[400 400],'Method','nearest');
+cortexData.ROIs(:,:,4) = imresize(cortexData.RSC,[400 400],'Method','nearest');
+cortexData.ROIs(:,:,5) = imresize(cortexData.VC,[400 400],'Method','nearest');
+cortexData.ROIs(:,:,6) = imresize(cortexData.AC,[400 400],'Method','nearest');
+cortexData.ROIs(:,:,7) = imresize(cortexData.TAC,[400 400],'Method','nearest');
+
+% Save
+save('cortexMap.mat','cortexData')
+clear('cortexData','cortexMap','X','I','i')
+
+end
+
+    

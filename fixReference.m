@@ -1,4 +1,4 @@
-function corrected_reference = fixReference(RAW_FILENAME, varargin)
+function fixed_reference = fixReference(RAW_FILENAME, varargin)
 % fixReference(RAW_REFERENCE_FILENAME) rotate any image and translates it
 % so that it is centered and straight. 
 %
@@ -6,7 +6,7 @@ function corrected_reference = fixReference(RAW_FILENAME, varargin)
 % line to make the reference straight. After double clicking it, the user
 % will have to draw a circle to surround the cranial window. After
 % positioning it, the user will have to press enter to finish, space to
-% repeat or esc to exit. Then, the corrected reference will be saved in the
+% repeat or esc to exit. Then, the fixed reference will be saved in the
 % current directory.
 % 
 % INPUTS:
@@ -71,7 +71,7 @@ while ~isSuccess
     % Rotation
     line_param = polyfit(h.Position(:,1), h.Position(:,2), 1);
     angle = 90 - atand(line_param(1));
-    corrected_reference = imrotate(raw_reference, -angle, 'crop');
+    fixed_reference = imrotate(raw_reference, -angle, 'crop');
   
     % Centering
     try
@@ -83,13 +83,13 @@ while ~isSuccess
     
     customWait(c);
     
-    translation = round(size(corrected_reference) / 2) - c.Center;
-    corrected_reference = imtranslate(corrected_reference, translation);
+    translation = round(size(fixed_reference) / 2) - c.Center;
+    fixed_reference = imtranslate(fixed_reference, translation);
     
     set(fig, 'Name', 'Enter if done. Space to repeat. Esc to exit');
     
     subplot(1, 2, 2)
-    imagesc(corrected_reference),
+    imagesc(fixed_reference),
     set(gca, ax_opt{:}),
     title('Corrected', t_opt{:});
      
@@ -126,8 +126,8 @@ while ~isSuccess
 end
 
 if flag_save
-    corrected_filename = strrep(file_name, 'raw', 'corrected');
-    imwrite(corrected_reference, strcat(corrected_filename, '.tif'), 'tif');
+    fixed_filename = strrep(file_name, 'raw', 'fixed');
+    imwrite(fixed_reference, strcat(fixed_filename, '.tif'), 'tif');
 end
 
     function pos = customWait(hROI)
