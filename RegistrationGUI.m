@@ -1,4 +1,4 @@
-classdef MaskGUI < matlab.apps.AppBase
+classdef RegistrationGUI < matlab.apps.AppBase
     
     % obj = MaskGUI() class creates a GUI that matches an already created
     % template with an image. This class does so by zooming and translating
