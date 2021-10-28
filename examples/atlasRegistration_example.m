@@ -1,11 +1,14 @@
-% Atlas-registration-example
+%% Atlas-registration-example
+% To show how Atlas-registration repository works
+
+%% Developed by Santiago Acosta on 10/28/20201
 
 %% Figures to see what we intend to do with Atlas-registration-GUI
 
-CORTEXMAP_FILENAME = which('\Atlas-registration-GUI\examples\cortex_map.tif');
-REF_RAW_FILENAME = which('\Atlas-registration-GUI\examples\refimg_raw.tif');
+CORTEXMAP_FILENAME = which('/Atlas-registration-GUI/examples/cortex_map.tif');
+REF_RAW_FILENAME = which('/Atlas-registration-GUI/examples/refimg_raw.tif');
 
-figure('Name', 'Register Goal', 'Position', [297,291,1348,520]);
+figure('Name', 'Register Goal', 'Position', [54,199,1348,520]);
 tiledlayout(1,2)
 
 ax1 = nexttile;
@@ -19,7 +22,6 @@ imshow(REF_RAW_FILENAME)
 title(ax2, 'Reference image to register', 'FontSize', 22)
 axis(ax2, 'square')
 
-
 %% First: transform our map image to a layered ROI matrix
 
 % Our data is sized 400 x 400 
@@ -28,7 +30,7 @@ cortexData = cortexmap2mat(CORTEXMAP_FILENAME, DIM);
 ROI = cortexData.ROIs;
 region_names = fieldnames(cortexData);
 
-figure('Name', 'Tif vs mat', 'Position', [297,291,1348,520]);
+figure('Name', 'Tif vs mat', 'Position', [2,256,1348,520]);
 tiledlayout(2,4)
 
 ax1 = nexttile;
@@ -68,7 +70,7 @@ ax_opt = {'XColor', [1 1 1], 'YColor', [1 1 1],...
     'Colormap', colormap('jet'), 'DataAspectRatio', [1 1 1], 'box', 'off'};
 close(gcf)
 
-figure('Name', 'Region masking', 'Position', [150,186,1688,662]);
+figure('Name', 'Region masking', 'Position', [150,186,1688,662], 'Color', [1 1 1]);
 tiledlayout(2,4)
 
 window_mask = mask.Window;
@@ -88,7 +90,7 @@ end
 %% To apply to the whole stack we will need to register all the raw images to the reference
 
 MOVING_REFERENCE_FILENAME = ...
-    which('\Atlas-registration-GUI\examples\refimg_raw_2.tif');
+    which('/Atlas-registration-GUI/examples/refimg_raw_2.tif');
 tform = register2reference(MOVING_REFERENCE_FILENAME, FIXED_REFERENCE_FILENAME);
 
 % now if we wanted to transform the moving reference, we would use:
